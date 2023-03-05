@@ -18,7 +18,10 @@ const searchVideos = createAsyncThunk("video/searchVideos", async (tags) => {
   const queryString = tags?.map((tag) => `tags_like=${tag}`).join("&");
   const response = await fetch(`http://localhost:9000/videos?${queryString}`);
   const result = await response.json();
-  return result;
+  const sortVideos = result.sort((firstObj, secObj) => {
+    return parseFloat(secObj.views) - parseFloat(firstObj.views);
+  });
+  return sortVideos;
 });
 
 const videosSlice = createSlice({
