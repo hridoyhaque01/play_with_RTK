@@ -4,11 +4,15 @@ const store = require("./app/store");
 
 store.subscribe(() => {});
 
-store.dispatch(fetchVideo()).then((fulfilledAction) => {
-  const { requestStatus } = fulfilledAction.meta;
-  if (requestStatus === "fulfilled") {
-    const { tags } = fulfilledAction.payload;
-
-    store.dispatch(searchVideos(tags));
-  }
-});
+store
+  .dispatch(fetchVideo())
+  .then((fulfilledAction) => {
+    const { requestStatus } = fulfilledAction.meta;
+    if (requestStatus === "fulfilled") {
+      const { tags } = fulfilledAction.payload;
+      store.dispatch(searchVideos(tags));
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });

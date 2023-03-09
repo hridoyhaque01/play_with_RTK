@@ -16,12 +16,11 @@ const fetchVideo = createAsyncThunk("video/fetchVideo", async () => {
 
 const searchVideos = createAsyncThunk("video/searchVideos", async (tags) => {
   const queryString = tags?.map((tag) => `tags_like=${tag}`).join("&");
-  const response = await fetch(`http://localhost:9000/videos?${queryString}`);
+  const response = await fetch(
+    `http://localhost:9000/videos?${queryString}&_sort=views&_order=desc`
+  );
   const result = await response.json();
-  const sortVideos = result.sort((firstObj, secObj) => {
-    return parseFloat(secObj.views) - parseFloat(firstObj.views);
-  });
-  return sortVideos;
+  return result;
 });
 
 const videosSlice = createSlice({
